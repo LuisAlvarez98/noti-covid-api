@@ -1,19 +1,10 @@
 require("dotenv").config();
 const express = require("express");
 const morgan = require("morgan");
-const mongoose = require("mongoose");
 const cors = require("./middleware/cors");
+const cron = require("node-cron");
 
 const nlRoutes = require("./routes/nl");
-
-/** Setup Mongoose */
-mongoose.connect("mongodb://localhost/noticovid", {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useUnifiedTopology: true,
-  useFindAndModify: false,
-});
-const db = mongoose.connection;
 
 /** Setup app */
 const app = express();
@@ -36,14 +27,11 @@ app.all("*", (req, res) => {
 });
 
 /** Init */
-
-db.once("open", () => {
-  console.log("Connected to the db");
-  app.listen(8080, () => {
-    console.log("The server is running on port 8080");
-  });
+cron.schedule("* * * * *", () => {
+  // "59 23 * * *"
+  console.log("running a task every minute");
 });
 
-db.on("error", () => {
-  console.log("DB connection error");
+app.listen(8080, () => {
+  console.log("The server is running on port 8080");
 });
