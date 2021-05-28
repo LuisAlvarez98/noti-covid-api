@@ -7,7 +7,7 @@ const cheerio = require("cheerio");
 const cron = require("node-cron");
 const nlRoutes = require("./routes/nl");
 const { getData } = require("./utils/util");
-
+const PORT = process.env.PORT || 8080;
 /** Setup app */
 const app = express();
 
@@ -85,6 +85,6 @@ cron.schedule("* * * * *", async () => {
   globals.listaDatosMunicipios = listaDatosMunicipios;
 });
 
-app.listen(8080, () => {
+app.listen(PORT, () => {
   console.log("The server is running on port 8080");
 });
